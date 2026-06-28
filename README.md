@@ -31,15 +31,16 @@ En produccion, `SQLITE_FILE` debe apuntar a un volumen persistente. No uses una 
 
 ## Base de datos
 
-La aplicacion usa SQLite nativo de Node (`node:sqlite`). Si la base no existe, se crea automaticamente. Si existe `data/places.json`, se usa una vez para poblar la base inicial.
+La aplicacion usa SQLite nativo de Node (`node:sqlite`). El repositorio incluye `data/places.sqlite` como base inicial versionada. Si la base no existe, se crea automaticamente. Si existe `data/places.json`, se usa una vez para poblar la base inicial.
 
-Archivos que no deben subirse al repositorio:
+Archivos temporales que no deben subirse al repositorio:
 
 ```txt
-data/*.sqlite
 data/*.sqlite-shm
 data/*.sqlite-wal
 ```
+
+En produccion, el archivo activo debe vivir en un volumen persistente. GitHub sirve para llevar una base inicial, pero no reemplaza los respaldos ni el almacenamiento persistente del hosting.
 
 ## Proteccion anti-spam
 
