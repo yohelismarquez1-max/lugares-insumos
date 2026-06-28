@@ -1,0 +1,12 @@
+{
+  "name": "lugares-insumos",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pagina publica para informar lugares que necesitan insumos.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

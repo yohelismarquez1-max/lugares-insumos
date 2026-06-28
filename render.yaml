@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: lugares-insumos
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    # Cuando compres el dominio, descomenta y reemplaza estos valores:
+    # domains:
+    #   - insumossolidarios.org
+    #   - www.insumossolidarios.org
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: SQLITE_FILE
+        value: /var/data/places.sqlite
+      - key: IP_HASH_SECRET
+        generateValue: true
+    disk:
+      name: lugares-insumos-data
+      mountPath: /var/data
+      sizeGB: 1
