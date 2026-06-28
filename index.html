@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0033a0" />
+    <title>Insumos Solidarios</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">+</span>
+          <span>Insumos Solidarios</span>
+        </a>
+        <div class="nav-links">
+          <a href="#pedidos">Pedidos</a>
+          <a class="nav-action" href="#publicar">Publicar</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Red publica de ayuda</p>
+          <h1>Lugares que necesitan insumos en Venezuela.</h1>
+          <p>Selecciona un estado, elige una localidad y encuentra pedidos activos de alimentos, agua, higiene y abrigo.</p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#publicar">Publicar necesidad</a>
+            <a class="secondary-link" href="#pedidos">Ver pedidos</a>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Actividad registrada">
+          <div class="hero-stat">
+            <span class="stat" id="totalPlaces">0</span>
+            <span>lugares registrados</span>
+          </div>
+          <div class="map-preview interactive-map" id="venezuelaMap" aria-label="Mapa interactivo de Venezuela">
+            <div class="map-stage real-map-stage">
+              <iframe
+                id="googleMapFrame"
+                title="Mapa real de Venezuela"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps?q=Venezuela&output=embed"
+              ></iframe>
+            </div>
+            <div class="map-status" id="mapStatus" aria-live="polite">Selecciona un estado del mapa</div>
+            <div class="state-panel">
+              <span>Estados</span>
+              <div class="state-chips" id="stateChips"></div>
+            </div>
+            <div class="locality-panel">
+              <span id="localityTitle">Localidades</span>
+              <div class="locality-chips" id="localityChips"></div>
+            </div>
+          </div>
+          <div class="hero-metrics">
+            <span><strong id="urgentPlaces">0</strong> urgentes</span>
+            <span><strong id="coveredPlaces">0</strong> cubiertos</span>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="toolbar" aria-label="Filtros de busqueda">
+        <label>
+          Buscar
+          <input id="searchInput" type="search" placeholder="Lugar, zona o insumo" />
+        </label>
+        <label>
+          Entidad
+          <select id="entityFilter">
+            <option value="">Toda Venezuela</option>
+          </select>
+        </label>
+        <label>
+          Localidad
+          <select id="localityFilter" disabled>
+            <option value="">Todas</option>
+          </select>
+        </label>
+        <label>
+          Urgencia
+          <select id="urgencyFilter">
+            <option value="">Todas</option>
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        </label>
+        <label>
+          Situacion
+          <select id="statusFilter">
+            <option value="">Todos</option>
+            <option value="necesita">Necesita</option>
+            <option value="parcial">Parcial</option>
+            <option value="cubierto">Cubierto</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="content-grid">
+        <section class="list-section" id="pedidos" aria-labelledby="listTitle">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">Necesidades activas</p>
+              <h2 id="listTitle">Pedidos publicados</h2>
+            </div>
+            <span class="result-pill" id="visibleCount">0 resultados</span>
+          </div>
+          <div id="placesList" class="places-list"></div>
+        </section>
+
+        <aside class="side-rail">
+          <section class="summary-panel" aria-labelledby="summaryTitle">
+            <p class="section-kicker">Estado general</p>
+            <h2 id="summaryTitle">Prioridades</h2>
+            <div class="summary-list">
+              <div>
+                <span class="summary-dot high"></span>
+                <span>Alta urgencia</span>
+                <strong id="highCount">0</strong>
+              </div>
+              <div>
+                <span class="summary-dot medium"></span>
+                <span>Urgencia media</span>
+                <strong id="mediumCount">0</strong>
+              </div>
+              <div>
+                <span class="summary-dot low"></span>
+                <span>Urgencia baja</span>
+                <strong id="lowCount">0</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="publish-panel" id="publicar" aria-labelledby="publishTitle">
+            <p class="section-kicker">Nuevo punto</p>
+            <h2 id="publishTitle">Publicar un lugar</h2>
+            <form id="placeForm">
+              <div class="anti-spam-field" aria-hidden="true">
+                <label>
+                  Sitio web
+                  <input name="website" tabindex="-1" autocomplete="off" />
+                </label>
+              </div>
+              <input type="hidden" name="startedAt" id="startedAt" />
+              <label>
+                Nombre del lugar
+                <input name="name" required maxlength="100" placeholder="Ej. Comedor Barrio Sur" />
+              </label>
+              <label>
+                Direccion
+                <input name="address" required maxlength="140" placeholder="Calle y numero" />
+              </label>
+              <label>
+                Estado o entidad
+                <select name="entity" id="entitySelect" required>
+                  <option value="">Selecciona una entidad</option>
+                </select>
+              </label>
+              <label>
+                Localidad
+                <select name="city" id="localitySelect" required disabled>
+                  <option value="">Selecciona una localidad</option>
+                </select>
+              </label>
+              <label>
+                Contacto
+                <input name="contact" required maxlength="120" placeholder="Telefono, email o red social" />
+              </label>
+              <div class="form-row">
+                <label>
+                  Urgencia
+                  <select name="urgency">
+                    <option value="alta">Alta</option>
+                    <option value="media" selected>Media</option>
+                    <option value="baja">Baja</option>
+                  </select>
+                </label>
+                <label>
+                  Situacion
+                  <select name="status">
+                    <option value="necesita">Necesita</option>
+                    <option value="parcial">Parcial</option>
+                    <option value="cubierto">Cubierto</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                Insumos requeridos
+                <input name="supplies" required maxlength="300" placeholder="Agua, frazadas, leche..." />
+              </label>
+              <label>
+                Detalles
+                <textarea name="notes" maxlength="600" rows="4" placeholder="Horarios, cantidades, indicaciones de entrega"></textarea>
+              </label>
+              <button type="submit">Publicar necesidad</button>
+              <p class="form-message" id="formMessage" role="status"></p>
+            </form>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./config.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

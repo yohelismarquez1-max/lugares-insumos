@@ -1,0 +1,36 @@
+[
+  {
+    "id": "seed-1",
+    "name": "Centro Comunitario San Martin",
+    "address": "Av. Central 1240",
+    "city": "Caracas",
+    "entity": "Distrito Capital",
+    "contact": "contacto@centrosm.org",
+    "urgency": "alta",
+    "status": "necesita",
+    "supplies": [
+      "Agua potable",
+      "Panales infantiles",
+      "Alimentos no perecederos"
+    ],
+    "notes": "Reciben donaciones de 9:00 a 18:00. Prioridad para familias evacuadas.",
+    "createdAt": "2026-06-28T12:38:44.850Z"
+  },
+  {
+    "id": "seed-2",
+    "name": "Comedor Esperanza",
+    "address": "Calle Norte 88",
+    "city": "Maracaibo",
+    "entity": "Zulia",
+    "contact": "+34 600 123 456",
+    "urgency": "media",
+    "status": "necesita",
+    "supplies": [
+      "Leche",
+      "Arroz",
+      "Articulos de higiene"
+    ],
+    "notes": "Necesitan reposicion para preparar 120 raciones diarias.",
+    "createdAt": "2026-06-28T12:38:44.854Z"
+  }
+]

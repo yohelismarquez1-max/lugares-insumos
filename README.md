@@ -1,60 +1,88 @@
-# Insumos Solidarios
+# Dominio propio
 
-Pagina publica para informar lugares de Venezuela que necesitan insumos. Permite publicar pedidos, filtrar por estado/localidad, verlos en un mapa real de Google Maps y guardar datos en SQLite.
+No se puede registrar un dominio solo desde el codigo: hay que comprarlo en un registrador con una cuenta y metodo de pago. Lo que si queda preparado aqui es la configuracion para conectarlo al hosting.
 
-## Requisitos
+## Nombres sugeridos
 
-- Node.js 24 o superior.
-- Un disco persistente en produccion para guardar `places.sqlite`.
-
-## Ejecutar en local
-
-```bash
-npm start
-```
-
-La app queda disponible en:
+Revisa disponibilidad antes de comprar:
 
 ```txt
-http://localhost:4173
+insumossolidarios.org
+insumossolidarios.com
+ayudavenezuela.org
+mapadeinsumos.org
+redinsumosvenezuela.org
 ```
 
-## Variables de entorno
+Para un proyecto publico de ayuda, `.org` suele comunicar mejor la finalidad solidaria. Si el `.org` no esta disponible, usa `.com`.
+
+## Donde comprarlo
+
+Puedes comprarlo en cualquier registrador:
 
 ```txt
-PORT=4173
-SQLITE_FILE=./data/places.sqlite
-IP_HASH_SECRET=una-frase-larga-y-secreta
+Cloudflare Registrar
+Namecheap
+GoDaddy
+Google Domains / Squarespace Domains
+Porkbun
 ```
 
-En produccion, `SQLITE_FILE` debe apuntar a un volumen persistente. No uses una ruta temporal.
+Despues de comprarlo, el panel del registrador te dejara editar DNS.
 
-## Base de datos
+## Si despliegas en Render
 
-La aplicacion usa SQLite nativo de Node (`node:sqlite`). El repositorio incluye `data/places.sqlite` como base inicial versionada. Si la base no existe, se crea automaticamente. Si existe `data/places.json`, se usa una vez para poblar la base inicial.
-
-Archivos temporales que no deben subirse al repositorio:
+1. En Render, abre el servicio `lugares-insumos`.
+2. Ve a Settings > Custom Domains.
+3. Agrega el dominio, por ejemplo:
 
 ```txt
-data/*.sqlite-shm
-data/*.sqlite-wal
+insumossolidarios.org
 ```
 
-En produccion, el archivo activo debe vivir en un volumen persistente. GitHub sirve para llevar una base inicial, pero no reemplaza los respaldos ni el almacenamiento persistente del hosting.
+4. Render mostrara los registros DNS exactos que debes crear.
+5. En el DNS del dominio, crea esos registros.
+6. Vuelve a Render y pulsa Verify.
 
-## Proteccion anti-spam
+Render indica que al agregar el dominio desde el Dashboard hay que configurar DNS en el proveedor y luego verificarlo. Tambien crea/renueva certificados TLS automaticamente.
 
-El servidor incluye:
+### render.yaml opcional
 
-- limite de publicaciones por IP
-- campo trampa invisible para bots
-- tiempo minimo antes de enviar el formulario
-- bloqueo de duplicados recientes
-- bloqueo de publicaciones con demasiados enlaces
-- registro interno de intentos sospechosos
+Cuando el dominio ya sea tuyo, puedes descomentar este bloque en `render.yaml`:
 
-## Despliegue
+```yaml
+domains:
+  - insumossolidarios.org
+  - www.insumossolidarios.org
+```
 
-Lee [DEPLOY.md](./DEPLOY.md) para subirla a Render o Railway con volumen persistente.
+Reemplaza `insumossolidarios.org` por el dominio comprado.
 
-Para conectar un dominio propio, lee [DOMAIN.md](./DOMAIN.md).
+## Si despliegas en Railway
+
+1. En Railway, abre el servicio de la app.
+2. Ve a Settings > Networking.
+3. Agrega el dominio propio.
+4. Railway mostrara el registro DNS que debes crear.
+5. En el DNS del dominio, crea el CNAME o registro indicado por Railway.
+6. Espera la propagacion y verifica el dominio.
+
+## Registros DNS habituales
+
+El hosting te dira los valores exactos. Normalmente sera algo parecido a:
+
+```txt
+www    CNAME    tu-app.onrender.com
+@      A/CNAME/ALIAS segun indique el hosting o tu proveedor DNS
+```
+
+No adivines los valores finales: copialos del panel de Render o Railway.
+
+## Checklist
+
+- Dominio comprado y a tu nombre.
+- App desplegada y funcionando con la URL temporal del hosting.
+- Dominio agregado en Render/Railway.
+- DNS creado en el registrador.
+- HTTPS activo.
+- La version con `www` y sin `www` abre correctamente.
